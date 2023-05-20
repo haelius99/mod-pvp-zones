@@ -4,6 +4,7 @@
 #include "DBCStores.h"
 #include "DBCStructure.h"
 #include "Define.h"
+#include "GameTime.h"
 #include "ObjectAccessor.h"
 #include "ObjectMgr.h"
 #include "Player.h"
@@ -37,12 +38,12 @@ struct Config
 
     std::map<Player*, uint32> points;
 
-    time_t last_announcement = sWorld->GetGameTime();
-    time_t announcement_delay;
+    float last_announcement = GameTime::GetGameTime().count();
+    float announcement_delay;
 
-    time_t last_event = 0;
-    time_t event_delay;
-    time_t event_lasts;
+    float last_event = 0;
+    float event_delay;
+    float event_lasts;
 };
 
 Config config;
@@ -143,10 +144,10 @@ public:
         {
             return;
         }
-        if (config.last_announcement + config.announcement_delay < sWorld->GetGameTime())
+        if (config.last_announcement + config.announcement_delay < GameTime::GetGameTime().count())
         {
             handler->PSendSysMessage("[pvp_zones] Is currently active in: %s - %s", config.current_zone_name.c_str(), config.current_area_name.c_str());
-            config.last_announcement = sWorld->GetGameTime();
+            config.last_announcement = GameTime::GetGameTime().count();
         }
     }
 
@@ -159,7 +160,7 @@ public:
         }
 
         config.active     = true;
-        config.last_event = sWorld->GetGameTime();
+        config.last_event = GameTime::GetGameTime().count();
 
         auto map_it = std::begin(config.ids);
         std::advance(map_it, rand() % config.ids.size());
@@ -311,7 +312,7 @@ public:
 
     static bool HandleDebugCommand(ChatHandler* /* handler */)
     {
-        sLog->outString("[pvp_zones] Debug: active: %i, arena_name: %s, zone_name: %s, last_announcement: %i, last_event: %i, next_announcement: %is", config.active, config.current_area_name, config.current_zone_name, config.last_announcement, config.last_event, (config.last_announcement + config.announcement_delay) - sWorld->GetGameTime());
+        LOG_INFO("module", "[pvp_zones] Debug: active: {}, arena_name: {}, zone_name: {}, last_announcement: {}, last_event: {}, next_announcement: {}s", config.active, config.current_area_name, config.current_zone_name, config.last_announcement, config.last_event, (config.last_announcement + config.announcement_delay) - GameTime::GetGameTime().count());
         return true;
     }
 };
@@ -348,21 +349,21 @@ public:
         handle = new ChatHandler(player->GetSession());
 
         /* create event every x seconds based on config */
-        if (config.last_event + config.event_delay < sWorld->GetGameTime())
+        if (config.last_event + config.event_delay < GameTime::GetGameTime().count())
         {
             ZoneLogicScript::CreateEvent(handle);
         }
 
         /* ends event if event is already running x seconds */
-        if (config.last_event + config.event_lasts < sWorld->GetGameTime())
+        if (config.last_event + config.event_lasts < GameTime::GetGameTime().count())
         {
             ZoneLogicScript::EndEvent(handle);
         }
 
         /* announcement stuff */
-        if (config.last_announcement + config.announcement_delay <= sWorld->GetGameTime())
+        if (config.last_announcement + config.announcement_delay <= GameTime::GetGameTime().count())
         {
-            sLog->outString("[pvp_zones] Announcement posted");
+            LOG_INFO("module", "[pvp_zones] Announcement posted");
             ZoneLogicScript::PostAnnouncement(handle);
         }
     }
