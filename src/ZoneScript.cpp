@@ -77,7 +77,7 @@ public:
     {
         if (config.current_area == newArea)
         {
-            ChatHandler((player->GetSession())).SendSysMessage("You have entered the PvP area");
+            ChatHandler((player->GetSession())).SendSysMessage("You have entered the Oceanic War cffFFFFFFblood zone!");
             config.area_players.push_back(player);
         }
         else
@@ -111,13 +111,13 @@ public:
             {
                 return;
             }
-            ChatHandler((player->GetSession())).SendSysMessage("You have entered the PvP zone");
+            ChatHandler((player->GetSession())).SendSysMessage("You have entered the Oceanic War cffFFFFFFblood zone!");
             config.zone_players.push_back(player);
             player->UpdatePvP(true, true);
         }
         else if (isPlayerInZone(player))
         {
-            ChatHandler((player->GetSession())).SendSysMessage("You left the PvP zone");
+            ChatHandler((player->GetSession())).SendSysMessage("You have left the Oceanic War cffFFFFFFblood zone!");
             config.zone_players.erase(std::remove(config.zone_players.begin(), config.zone_players.end(), player), config.zone_players.end());
         }
     }
@@ -190,7 +190,7 @@ public:
             if (player.second->GetZoneId() == config.current_zone)
             {
                 player.second->SetPvP(true);
-                ChatHandler(player.second->GetSession()).SendSysMessage("You have entered the PvP zone");
+                ChatHandler(player.second->GetSession()).SendSysMessage("You have entered the Oceanic War cffFFFFFFblood zone!");
                 config.zone_players.push_back(player.second);
             }
 
@@ -371,6 +371,7 @@ public:
 
 void Addpvp_zonesScripts()
 {
+    new ZoneWorld();
     new ZoneConfig();
     new ZoneLogicScript();
     new ZoneCommands();
