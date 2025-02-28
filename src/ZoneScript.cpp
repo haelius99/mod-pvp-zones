@@ -77,7 +77,7 @@ public:
         PLAYERHOOK_ON_PLAYER_PVP_FLAG_CHANGE,
         PLAYERHOOK_ON_UPDATE_ZONE,
         PLAYERHOOK_ON_PVP_KILL
-    })
+    }) {}
 
     /* adding/removing players that are currently in the area */
     void OnPlayerUpdateArea(Player* player, uint32 /* oldArea*/, uint32 newArea) override
