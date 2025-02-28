@@ -310,8 +310,8 @@ public:
         if (!config.enabled)
             return;
 
-        WorldSessionMgr::SessionMap   m_sessions = sWorldSessionMgr->GetAllSessions();
-        Player*      player;
+        WorldSessionMgr::SessionMap m_sessions = sWorldSessionMgr->GetAllSessions();
+        Player* player = nullptr;
         ChatHandler* handle;
 
         for (WorldSessionMgr::SessionMap::iterator itr = m_sessions.begin(); itr != m_sessions.end(); ++itr)
