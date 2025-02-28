@@ -9,6 +9,7 @@
 #include "ObjectMgr.h"
 #include "Player.h"
 #include "ScriptMgr.h"
+#include "WorldSessionMgr.h"
 #include <algorithm>
 #include <iterator>
 #include <map>
@@ -309,7 +310,7 @@ public:
         if (!config.enabled)
             return;
 
-        SessionMap   m_sessions = sWorld->GetAllSessions();
+        SessionMap   m_sessions = sWorldSessionMgr->GetAllSessions();
         Player*      player;
         ChatHandler* handle;
 
