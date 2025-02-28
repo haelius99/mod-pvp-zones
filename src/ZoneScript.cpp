@@ -314,7 +314,7 @@ public:
         Player*      player;
         ChatHandler* handle;
 
-        for (SessionMap::iterator itr = m_sessions.begin(); itr != m_sessions.end(); ++itr)
+        for (WorldSessionMgr::SessionMap::iterator itr = m_sessions.begin(); itr != m_sessions.end(); ++itr)
         {
             if (!itr->second || !itr->second->GetPlayer() || !itr->second->GetPlayer()->IsInWorld())
                 continue;
